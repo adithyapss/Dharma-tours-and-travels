@@ -1,0 +1,230 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  @apply font-sans text-ocean-blue overflow-x-hidden bg-sand-light;
+}
+
+.site-navbar {
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.navbar-links-pill {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  padding: 6px 20px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.site-navbar.scrolled {
+  background: rgba(255, 255, 255, 0.97);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.site-navbar-link {
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.site-navbar-link-active {
+  color: #ff6b2b !important;
+}
+
+.site-navbar.scrolled .site-navbar-link {
+  color: #1a1a2e;
+}
+
+.site-navbar.scrolled .site-navbar-link-active {
+  color: #ff6b2b !important;
+}
+
+.destinations-navbar {
+  background: rgba(255, 255, 255, 0.97);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.destinations-navbar .site-navbar-link {
+  color: #1a1a2e;
+}
+
+.destinations-navbar .site-navbar-link-active {
+  color: #ff6b2b !important;
+}
+
+.destinations-navbar .navbar-links-pill {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  padding: 6px 24px;
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
+
+.destinations-navbar .logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.destinations-navbar .logo-main {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.destinations-navbar .logo-sub {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  line-height: 1.1;
+  letter-spacing: 0.24em;
+}
+
+.destinations-card {
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.destinations-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.destination-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #e5e7eb;
+}
+
+.destination-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
+  animation: destination-shimmer 1.2s infinite;
+  transform: translateX(-100%);
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hero {
+  background-image: url("https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1600");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+@keyframes destination-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ── Parallax ── */
+.parallax-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.parallax-bg-image {
+  position: absolute;
+  top: -30%;
+  left: 0;
+  width: 100%;
+  height: 160%;
+  background-size: cover;
+  background-position: center;
+}
+
+.parallax-layer {
+  will-change: transform;
+}
+
+/* ── Card zoom ── */
+.card-zoom img {
+  transition: transform 0.5s ease;
+}
+.card-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* ── Text shadow for hero ── */
+.text-shadow-hero {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Glassmorphism ── */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* ── Reveal on scroll ── */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Button ripple ── */
+.ripple-container {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.ripple-label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-ripple {
+  position: absolute;
+  border-radius: 9999px;
+  transform: scale(0);
+  animation: button-ripple 650ms linear;
+  background-color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes button-ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}

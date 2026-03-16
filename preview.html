@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>South India Tours | Explore God's Own Country</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; color: #333; overflow-x: hidden; scroll-behavior: smooth; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Playfair Display', serif; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #e07c24; border-radius: 4px; }
+
+    /* === NAVBAR === */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+      transition: all 0.3s ease; background: transparent;
+    }
+    .navbar.scrolled {
+      background: rgba(26,26,46,0.97); backdrop-filter: blur(10px);
+      padding: 10px 5%; box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; color: white; font-family: 'Playfair Display'; font-size: 1.5rem; font-weight: 700; }
+    .nav-logo i { font-size: 1.8rem; color: #f4a261; }
+    .nav-logo span { color: #f4a261; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { color: white; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #f4a261; transition: width 0.3s; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-links a:hover, .nav-links a.active { color: #f4a261; }
+    .nav-contact-btn { background: linear-gradient(135deg,#e07c24,#f4a261); color: white!important; padding: 8px 22px; border-radius: 50px; font-weight: 600!important; }
+    .nav-contact-btn::after { display: none!important; }
+    .nav-contact-btn:hover { transform: scale(1.05); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 5px; z-index: 1001; }
+    .hamburger span { width: 25px; height: 2.5px; background: white; transition: all 0.3s; border-radius: 2px; }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    /* === PAGE SECTIONS (hidden by default) === */
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+
+    /* === HERO === */
+    .hero {
+      height: 100vh; position: relative; display: flex; align-items: center; overflow: hidden;
+    }
+    .hero-slide {
+      position: absolute; inset: 0; background-size: cover; background-position: center;
+      opacity: 0; transition: opacity 1.2s ease;
+    }
+    .hero-slide.active { opacity: 1; }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(26,26,46,0.85) 0%, rgba(26,26,46,0.5) 50%, rgba(224,124,36,0.3) 100%);
+    }
+    .hero-content { position: relative; z-index: 2; padding: 0 10%; max-width: 750px; }
+    .hero-content .subtitle { color: #f4a261; font-size: 1.1rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; }
+    .hero-content h1 { font-size: 3.5rem; color: white; line-height: 1.2; margin-bottom: 20px; }
+    .hero-content h1 em { color: #f4a261; font-style: normal; }
+    .hero-content p { color: rgba(255,255,255,0.85); font-size: 1.15rem; line-height: 1.7; margin-bottom: 35px; }
+    .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+    .hero-stats { position: absolute; bottom: 60px; right: 10%; z-index: 2; display: flex; gap: 40px; }
+    .hero-stat { text-align: center; color: white; }
+    .hero-stat h3 { font-size: 2.5rem; color: #f4a261; font-family: 'Poppins'; }
+    .hero-stat p { font-size: 0.9rem; opacity: 0.8; }
+    .hero-dots { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; gap: 10px; }
+    .hero-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s; border: none; }
+    .hero-dot.active { background: #f4a261; width: 35px; border-radius: 6px; }
+
+    /* === BUTTONS === */
+    .btn-primary {
+      background: linear-gradient(135deg,#e07c24,#f4a261); color: white; border: none;
+      padding: 12px 30px; border-radius: 50px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; font-family: 'Poppins';
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(224,124,36,0.4); }
+    .btn-secondary {
+      background: transparent; color: white; border: 2px solid rgba(255,255,255,0.6);
+      padding: 10px 28px; border-radius: 50px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: all 0.3s; font-family: 'Poppins';
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.15); border-color: white; }
+
+    /* === SECTION HEADER === */
+    .section-header { text-align: center; margin-bottom: 50px; }
+    .section-header h2 { font-size: 2.5rem; color: #1a1a2e; margin-bottom: 10px; position: relative; display: inline-block; }
+    .section-header h2::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: linear-gradient(90deg,#e07c24,#f4a261); border-radius: 2px; }
+    .section-header p { color: #666; font-size: 1.1rem; margin-top: 15px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+    /* === FEATURED PACKAGES === */
+    .featured-section { padding: 80px 5%; background: #fafafa; }
+    .packages-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(320px,1fr)); gap: 30px; }
+    .package-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.3s; }
+    .package-card:hover { transform: translateY(-8px); box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+    .package-card-image { height: 220px; position: relative; overflow: hidden; }
+    .package-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .package-card:hover .package-card-image img { transform: scale(1.1); }
+    .package-badge { position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg,#e07c24,#f4a261); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: capitalize; }
+    .package-duration { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
+    .package-card-content { padding: 25px; }
+    .package-card-content h3 { font-size: 1.3rem; margin-bottom: 5px; color: #1a1a2e; }
+    .package-state { color: #e07c24; font-size: 0.9rem; font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+    .package-card-content .desc { color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .package-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; }
+    .stars { color: #f4a261; display: flex; gap: 2px; }
+    .rating-text { font-size: 0.85rem; color: #888; }
+    .package-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 15px; border-top: 1px solid #eee; }
+    .package-price .original { text-decoration: line-through; color: #999; font-size: 0.85rem; }
+    .package-price .current { font-size: 1.4rem; font-weight: 700; color: #1a1a2e; font-family: 'Poppins'; }
+    .package-price .per-person { font-size: 0.75rem; color: #888; display: block; }
+    .view-btn { background: linear-gradient(135deg,#e07c24,#f4a261); color: white; border: none; padding: 10px 22px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Poppins'; font-size: 0.9rem; }
+    .view-btn:hover { box-shadow: 0 5px 15px rgba(224,124,36,0.4); transform: scale(1.05); }
+
+    /* === WHY CHOOSE US === */
+    .why-us-section { padding: 80px 5%; background: white; }
+    .why-us-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 30px; }
+    .why-us-card { text-align: center; padding: 40px 25px; border-radius: 16px; background: linear-gradient(135deg,#fff,#fafafa); border: 1px solid #eee; transition: all 0.3s; }
+    .why-us-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-color: #f4a261; }
+    .why-us-icon { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg,rgba(224,124,36,0.1),rgba(244,162,97,0.1)); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.8rem; color: #e07c24; }
+    .why-us-card h3 { font-size: 1.2rem; margin-bottom: 10px; color: #1a1a2e; }
+    .why-us-card p { color: #666; font-size: 0.9rem; line-height: 1.6; }
+
+    /* === DESTINATIONS === */
+    .destinations-section { padding: 80px 5%; background: #fafafa; }
+    .destinations-grid { display: grid; grid-template-columns: repeat(4,1fr); grid-template-rows: repeat(2,200px); gap: 15px; }
+    .dest-card { border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; }
+    .dest-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .dest-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .dest-card:hover img { transform: scale(1.1); }
+    .dest-overlay { position: absolute; inset: 0; background: linear-gradient(to top,rgba(0,0,0,0.7),transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; color: white; }
+    .dest-overlay h3 { font-size: 1.3rem; }
+    .dest-overlay p { font-size: 0.85rem; opacity: 0.8; }
+
+    /* === CTA === */
+    .cta-section { padding: 100px 5%; background: linear-gradient(135deg,#1a1a2e,#16213e); text-align: center; position: relative; overflow: hidden; }
+    .cta-section::before { content: ''; position: absolute; top: -50%; right: -20%; width: 400px; height: 400px; border-radius: 50%; background: rgba(224,124,36,0.1); }
+    .cta-section::after { content: ''; position: absolute; bottom: -30%; left: -10%; width: 300px; height: 300px; border-radius: 50%; background: rgba(244,162,97,0.08); }
+    .cta-section h2 { font-size: 2.5rem; color: white; margin-bottom: 15px; position: relative; z-index: 1; }
+    .cta-section > p { color: rgba(255,255,255,0.7); font-size: 1.1rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+    .cta-contact-info { display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap; position: relative; z-index: 1; }
+    .cta-contact-item { display: flex; align-items: center; gap: 10px; color: white; }
+    .cta-contact-item .cta-icon { width: 45px; height: 45px; border-radius: 50%; background: rgba(224,124,36,0.2); display: flex; align-items: center; justify-content: center; color: #f4a261; font-size: 1.2rem; }
+    .cta-contact-item .cta-text { text-align: left; font-size: 0.95rem; }
+    .cta-contact-item strong { display: block; color: #f4a261; margin-bottom: 2px; }
+
+    /* === PAGE BANNER === */
+    .page-banner { height: 350px; background-size: cover; background-position: center; background-attachment: fixed; display: flex; align-items: center; justify-content: center; position: relative; margin-top: 70px; }
+    .page-banner::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,rgba(26,26,46,0.8),rgba(224,124,36,0.4)); }
+    .page-banner-content { position: relative; text-align: center; color: white; }
+    .page-banner-content h1 { font-size: 3rem; margin-bottom: 10px; }
+    .page-banner-content p { font-size: 1.2rem; opacity: 0.9; }
+
+    /* === PACKAGES PAGE === */
+    .packages-page { padding: 40px 5% 80px; background: #fafafa; }
+    .packages-filters { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+    .filter-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+    .filter-tab { padding: 8px 20px; border: 2px solid #ddd; border-radius: 50px; background: white; cursor: pointer; font-family: 'Poppins'; font-weight: 500; font-size: 0.9rem; transition: all 0.3s; color: #666; }
+    .filter-tab.active, .filter-tab:hover { border-color: #e07c24; color: #e07c24; background: rgba(224,124,36,0.05); }
+    .sort-select { padding: 10px 20px; border: 2px solid #ddd; border-radius: 50px; background: white; font-family: 'Poppins'; font-size: 0.9rem; color: #666; cursor: pointer; outline: none; }
+
+    /* === CAB CARDS === */
+    .cabs-page { padding: 40px 5% 80px; background: #fafafa; }
+    .cabs-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(350px,1fr)); gap: 25px; }
+    .cab-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.3s; }
+    .cab-card:hover { transform: translateY(-5px); box-shadow: 0 10px 35px rgba(0,0,0,0.15); }
+    .cab-card-image { height: 200px; overflow: hidden; }
+    .cab-card-image img { width: 100%; height: 100%; object-fit: cover; }
+    .cab-card-content { padding: 25px; }
+    .cab-type-badge { background: linear-gradient(135deg,#e07c24,#f4a261); color: white; padding: 4px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; display: inline-block; margin-bottom: 10px; }
+    .cab-card-content h3 { font-size: 1.2rem; margin-bottom: 8px; color: #1a1a2e; }
+    .cab-card-content .cab-desc { color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px; }
+    .cab-features { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; }
+    .cab-feature-tag { background: #f0f0f0; color: #555; padding: 4px 10px; border-radius: 15px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 4px; }
+    .cab-capacity { display: flex; align-items: center; gap: 8px; color: #e07c24; font-weight: 600; margin-bottom: 10px; font-size: 0.9rem; }
+    .cab-pricing { display: flex; justify-content: space-between; align-items: center; padding-top: 15px; border-top: 1px solid #eee; }
+    .cab-price-item { text-align: center; }
+    .cab-price-item .label { font-size: 0.75rem; color: #888; display: block; }
+    .cab-price-item .price { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; font-family: 'Poppins'; }
+
+    /* === HOTELS === */
+    .hotels-page { padding: 40px 5% 80px; background: #fafafa; }
+    .hotels-note { background: linear-gradient(135deg,rgba(224,124,36,0.1),rgba(244,162,97,0.1)); border: 2px solid #f4a261; border-radius: 16px; padding: 25px 30px; margin-bottom: 40px; text-align: center; }
+    .hotels-note h3 { color: #e07c24; margin-bottom: 10px; font-size: 1.3rem; }
+    .hotels-note p { color: #666; }
+    .hotels-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(350px,1fr)); gap: 25px; }
+    .hotel-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.3s; }
+    .hotel-card:hover { transform: translateY(-5px); box-shadow: 0 10px 35px rgba(0,0,0,0.15); }
+    .hotel-card-image { height: 220px; overflow: hidden; position: relative; }
+    .hotel-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .hotel-card:hover .hotel-card-image img { transform: scale(1.1); }
+    .hotel-category-badge { position: absolute; top: 15px; right: 15px; padding: 4px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+    .hotel-category-badge.budget { background: #27ae60; color: white; }
+    .hotel-category-badge.standard { background: #3498db; color: white; }
+    .hotel-category-badge.premium { background: #e07c24; color: white; }
+    .hotel-category-badge.luxury { background: #8e44ad; color: white; }
+    .hotel-card-content { padding: 25px; }
+    .hotel-card-content h3 { font-size: 1.2rem; margin-bottom: 5px; color: #1a1a2e; }
+    .hotel-location { color: #e07c24; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; margin-bottom: 10px; }
+    .hotel-card-content .hdesc { color: #666; font-size: 0.88rem; line-height: 1.5; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .hotel-amenities { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; }
+    .amenity-tag { background: #f0f0f0; color: #555; padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; }
+    .hotel-price-range { font-weight: 600; color: #1a1a2e; margin-bottom: 15px; font-size: 1rem; }
+    .hotel-contact-section { background: #f9f9f9; border-radius: 10px; padding: 15px; margin-top: 10px; }
+    .hotel-contact-section h4 { font-size: 0.9rem; color: #e07c24; margin-bottom: 8px; font-family: 'Poppins'; }
+    .hotel-contact-item { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 0.85rem; color: #555; }
+    .hotel-contact-item i { color: #e07c24; width: 16px; }
+
+    /* === ABOUT === */
+    .about-page { padding: 60px 5% 80px; }
+    .about-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; margin-bottom: 60px; }
+    .about-intro-image { border-radius: 16px; overflow: hidden; height: 400px; }
+    .about-intro-image img { width: 100%; height: 100%; object-fit: cover; }
+    .about-intro-content h2 { font-size: 2rem; color: #1a1a2e; margin-bottom: 20px; }
+    .about-intro-content p { color: #666; line-height: 1.8; margin-bottom: 15px; }
+    .about-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; margin: 60px 0; }
+    .about-stat-card { text-align: center; padding: 30px; background: linear-gradient(135deg,#1a1a2e,#16213e); border-radius: 16px; color: white; }
+    .about-stat-card h3 { font-size: 2.5rem; color: #f4a261; margin-bottom: 5px; font-family: 'Poppins'; }
+    .about-stat-card p { font-size: 0.9rem; opacity: 0.8; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 25px; margin-top: 30px; }
+    .team-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; transition: all 0.3s; }
+    .team-card:hover { transform: translateY(-5px); }
+    .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg,#e07c24,#f4a261); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 2rem; color: white; }
+    .team-card h4 { color: #1a1a2e; margin-bottom: 5px; }
+    .team-card .role { color: #e07c24; font-size: 0.85rem; font-weight: 500; }
+
+    /* === CONTACT === */
+    .contact-page { padding: 40px 5% 80px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; }
+    .contact-info-cards { display: flex; flex-direction: column; gap: 20px; }
+    .contact-info-card { background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; align-items: flex-start; gap: 15px; transition: all 0.3s; }
+    .contact-info-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+    .contact-info-card .ci-icon { width: 50px; height: 50px; border-radius: 12px; background: linear-gradient(135deg,#e07c24,#f4a261); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; flex-shrink: 0; }
+    .contact-info-card h4 { color: #1a1a2e; margin-bottom: 5px; font-size: 1rem; }
+    .contact-info-card p { color: #666; font-size: 0.9rem; line-height: 1.5; }
+    .contact-form-card { background: white; border-radius: 16px; padding: 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .contact-form-card h3 { font-size: 1.5rem; color: #1a1a2e; margin-bottom: 25px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 500; color: #333; font-size: 0.9rem; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 15px; border: 2px solid #eee; border-radius: 10px; font-family: 'Poppins'; font-size: 0.9rem; transition: border-color 0.3s; outline: none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #e07c24; }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg,#e07c24,#f4a261); color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Poppins'; }
+    .submit-btn:hover { box-shadow: 0 8px 25px rgba(224,124,36,0.4); transform: translateY(-2px); }
+
+    /* === PACKAGE DETAIL === */
+    .package-detail { padding: 40px 5% 80px; margin-top: 70px; }
+    .pd-header { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; margin-bottom: 40px; }
+    .pd-main-img { border-radius: 16px; overflow: hidden; height: 450px; }
+    .pd-main-img img { width: 100%; height: 100%; object-fit: cover; }
+    .pd-gallery { display: grid; grid-template-rows: 1fr 1fr; gap: 15px; }
+    .pd-gallery img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+    .pd-body { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+    .pd-info h2 { font-size: 2rem; color: #1a1a2e; margin-bottom: 5px; }
+    .pd-meta { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .pd-meta-item { display: flex; align-items: center; gap: 5px; color: #666; font-size: 0.9rem; }
+    .pd-meta-item i { color: #e07c24; }
+    .pd-description { color: #555; line-height: 1.8; margin-bottom: 30px; }
+    .pd-section { margin-bottom: 30px; }
+    .pd-section h3 { font-size: 1.4rem; color: #1a1a2e; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+    .highlights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .highlight-item { display: flex; align-items: center; gap: 8px; padding: 8px 0; color: #555; }
+    .highlight-item i { color: #27ae60; }
+    .itinerary-item { background: #f9f9f9; border-radius: 12px; padding: 20px; margin-bottom: 12px; border-left: 4px solid #e07c24; }
+    .itinerary-item h4 { color: #e07c24; margin-bottom: 5px; font-family: 'Poppins'; font-size: 1rem; }
+    .itinerary-item p { color: #666; font-size: 0.9rem; line-height: 1.6; }
+    .inclusion-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .inclusion-item { display: flex; align-items: center; gap: 8px; color: #555; font-size: 0.9rem; }
+    .inclusion-item.incl i { color: #27ae60; }
+    .inclusion-item.excl i { color: #e74c3c; }
+
+    /* Booking sidebar */
+    .booking-sidebar { position: sticky; top: 90px; }
+    .booking-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 5px 30px rgba(0,0,0,0.1); }
+    .booking-card .price-section { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+    .booking-card .orig-price { text-decoration: line-through; color: #999; font-size: 1rem; }
+    .booking-card .curr-price { font-size: 2.2rem; font-weight: 700; color: #1a1a2e; font-family: 'Poppins'; display: block; }
+    .booking-card .pp { color: #888; font-size: 0.85rem; }
+    .booking-card .discount-badge { background: #27ae60; color: white; padding: 3px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-block; margin-top: 5px; }
+    .booking-card .contact-info { margin-top: 20px; text-align: center; color: #888; font-size: 0.85rem; }
+    .booking-card .contact-info strong { color: #e07c24; display: block; font-size: 1.1rem; font-family: 'Poppins'; }
+
+    /* === FOOTER === */
+    .footer { background: #0a0a1a; padding: 60px 5% 20px; color: white; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 40px; }
+    .footer-about h3 { font-size: 1.5rem; margin-bottom: 15px; }
+    .footer-about h3 span { color: #f4a261; }
+    .footer-about p { color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 20px; }
+    .footer-socials { display: flex; gap: 12px; }
+    .footer-socials a { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s; }
+    .footer-socials a:hover { background: #e07c24; transform: translateY(-3px); }
+    .footer h4 { font-size: 1.1rem; margin-bottom: 20px; color: #f4a261; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a { color: rgba(255,255,255,0.6); transition: color 0.3s; font-size: 0.9rem; }
+    .footer-links a:hover { color: #f4a261; }
+    .footer-contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+    .footer-contact-item i { color: #f4a261; margin-top: 3px; }
+    .footer-bottom { padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .footer-bottom p { color: rgba(255,255,255,0.4); font-size: 0.85rem; }
+
+    /* === TOAST === */
+    .toast { position: fixed; bottom: 30px; right: 30px; background: #27ae60; color: white; padding: 15px 25px; border-radius: 12px; font-family: 'Poppins'; font-weight: 500; z-index: 9999; transform: translateX(150%); transition: transform 0.4s ease; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+    .toast.show { transform: translateX(0); }
+    .toast.error { background: #e74c3c; }
+
+    /* === RESPONSIVE === */
+    @media(max-width:992px) {
+      .hero-content h1 { font-size: 2.5rem; }
+      .hero-stats { display: none; }
+      .destinations-grid { grid-template-columns: repeat(2,1fr); }
+      .destinations-grid .dest-card:nth-child(1) { grid-column: span 2; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .pd-header { grid-template-columns: 1fr; }
+      .pd-body { grid-template-columns: 1fr; }
+      .about-intro { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: repeat(2,1fr); }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+    @media(max-width:768px) {
+      .nav-links { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: #1a1a2e; flex-direction: column; padding: 80px 30px 30px; transition: right 0.3s ease; gap: 20px; box-shadow: -5px 0 20px rgba(0,0,0,0.3); }
+      .nav-links.open { right: 0; }
+      .hamburger { display: flex; }
+      .hero-content h1 { font-size: 2rem; }
+      .hero-content { padding: 0 5%; }
+      .section-header h2 { font-size: 1.8rem; }
+      .packages-grid, .cabs-grid, .hotels-grid { grid-template-columns: 1fr; }
+      .destinations-grid { grid-template-columns: 1fr; }
+      .destinations-grid .dest-card:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .page-banner-content h1 { font-size: 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .highlights-grid, .inclusion-list { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .pd-header { grid-template-columns: 1fr; }
+      .pd-main-img { height: 300px; }
+    }
+    @media(max-width:480px) {
+      .hero-content h1 { font-size: 1.6rem; }
+      .hero-content p { font-size: 0.95rem; }
+      .about-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="nav-logo" onclick="showPage('home')">
+    <i class="fas fa-map-marked-alt"></i> South<span>India</span>Tours
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="#" onclick="showPage('home')" class="active" data-page="home">Home</a>
+    <a href="#" onclick="showPage('packages')" data-page="packages">Packages</a>
+    <a href="#" onclick="showPage('cabs')" data-page="cabs">Cabs</a>
+    <a href="#" onclick="showPage('hotels')" data-page="hotels">Hotels</a>
+    <a href="#" onclick="showPage('about')" data-page="about">About</a>
+    <a href="#" onclick="showPage('contact')" class="nav-contact-btn" data-page="contact">Contact Us</a>
+  </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ======================= HOME PAGE ======================= -->
+<div class="page-section active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-slide active" id="slide-0" style="background-image:url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1600')">
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-slide" id="slide-1" style="background-image:url('https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=1600')">
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-slide" id="slide-2" style="background-image:url('https://images.unsplash.com/photo-1600100397608-e45867d89517?w=1600')">
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-slide" id="slide-3" style="background-image:url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1600')">
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content" id="heroContent">
+      <p class="subtitle">Welcome to</p>
+      <h1>God's Own Country <em>Kerala</em></h1>
+      <p>Cruise through serene backwaters, explore lush tea gardens, and experience Ayurvedic bliss in the tropical paradise of Kerala.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="showPage('packages')"><i class="fas fa-compass"></i> Explore Packages</button>
+        <button class="btn-secondary" onclick="showPage('contact')"><i class="fas fa-paper-plane"></i> Plan Your Trip</button>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><h3>500+</h3><p>Happy Travelers</p></div>
+      <div class="hero-stat"><h3>50+</h3><p>Destinations</p></div>
+      <div class="hero-stat"><h3>4.8</h3><p>User Rating</p></div>
+    </div>
+
+    <div class="hero-dots">
+      <button class="hero-dot active" onclick="goToSlide(0)"></button>
+      <button class="hero-dot" onclick="goToSlide(1)"></button>
+      <button class="hero-dot" onclick="goToSlide(2)"></button>
+      <button class="hero-dot" onclick="goToSlide(3)"></button>
+    </div>
+  </section>
+
+  <!-- FEATURED PACKAGES -->
+  <section class="featured-section">
+    <div class="section-header">
+      <h2>Featured Tour Packages</h2>
+      <p>Handpicked tours to showcase the best of South India's diverse beauty</p>
+    </div>
+    <div class="packages-grid" id="featuredGrid"></div>
+    <div style="text-align:center;margin-top:40px">
+      <button class="btn-primary" onclick="showPage('packages')">View All Packages <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section class="why-us-section">
+    <div class="section-header">
+      <h2>Why Choose Us</h2>
+      <p>We make your South India journey seamless and memorable</p>
+    </div>
+    <div class="why-us-grid">
+      <div class="why-us-card">
+        <div class="why-us-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>Trusted & Safe</h3>
+        <p>Verified hotels, licensed drivers, and comprehensive travel insurance for worry-free trips.</p>
+      </div>
+      <div class="why-us-card">
+        <div class="why-us-icon"><i class="fas fa-money-bill-wave"></i></div>
+        <h3>Best Price Guarantee</h3>
+        <p>We offer the most competitive prices with no hidden charges. Best value for your money.</p>
+      </div>
+      <div class="why-us-card">
+        <div class="why-us-icon"><i class="fas fa-route"></i></div>
+        <h3>Customized Tours</h3>
+        <p>Tailor-made itineraries that match your preferences, budget, and travel style perfectly.</p>
+      </div>
+      <div class="why-us-card">
+        <div class="why-us-icon"><i class="fas fa-headset"></i></div>
+        <h3>24/7 Support</h3>
+        <p>Round-the-clock customer support throughout your journey. We're always just a call away.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESTINATIONS -->
+  <section class="destinations-section">
+    <div class="section-header">
+      <h2>Popular Destinations</h2>
+      <p>Explore the most sought-after destinations in South India</p>
+    </div>
+    <div class="destinations-grid">
+      <div class="dest-card" onclick="showPage('packages')">
+        <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800" alt="Kerala">
+        <div class="dest-overlay"><h3>Kerala</h3><p>Backwaters & Nature</p></div>
+      </div>
+      <div class="dest-card" onclick="showPage('packages')">
+        <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800" alt="Tamil Nadu">
+        <div class="dest-overlay"><h3>Tamil Nadu</h3><p>Temples & Culture</p></div>
+      </div>
+      <div class="dest-card" onclick="showPage('packages')">
+        <img src="https://images.unsplash.com/photo-1600100397608-e45867d89517?w=800" alt="Karnataka">
+        <div class="dest-overlay"><h3>Karnataka</h3><p>Heritage & Hills</p></div>
+      </div>
+      <div class="dest-card" onclick="showPage('packages')">
+        <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800" alt="Goa">
+        <div class="dest-overlay"><h3>Goa</h3><p>Beaches & Nightlife</p></div>
+      </div>
+      <div class="dest-card" onclick="showPage('packages')">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800" alt="Andaman">
+        <div class="dest-overlay"><h3>Andaman</h3><p>Islands & Diving</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Ready to Explore South India?</h2>
+    <p>Contact us today and let us plan your perfect South Indian getaway. Custom packages available for groups, families, and solo travelers.</p>
+    <button class="btn-primary" onclick="showPage('contact')" style="font-size:1.1rem;padding:15px 35px;position:relative;z-index:1">Plan My Trip <i class="fas fa-arrow-right"></i></button>
+    <div class="cta-contact-info">
+      <div class="cta-contact-item">
+        <div class="cta-icon"><i class="fas fa-phone"></i></div>
+        <div class="cta-text"><strong>Call Us</strong>+91 98765 43210</div>
+      </div>
+      <div class="cta-contact-item">
+        <div class="cta-icon"><i class="fab fa-whatsapp"></i></div>
+        <div class="cta-text"><strong>WhatsApp</strong>+91 98765 43210</div>
+      </div>
+      <div class="cta-contact-item">
+        <div class="cta-icon"><i class="fas fa-envelope"></i></div>
+        <div class="cta-text"><strong>Email</strong>info@southindiatours.com</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ======================= PACKAGES PAGE ======================= -->
+<div class="page-section" id="page-packages">
+  <div class="page-banner" style="background-image:url('https://images.unsplash.com/photo-1609920658906-8223bd289001?w=1600')">
+    <div class="page-banner-content"><h1>Tour Packages</h1><p>Discover our carefully curated South India tour packages</p></div>
+  </div>
+  <div class="packages-page">
+    <div class="packages-filters">
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterPackages('all',this)">All</button>
+        <button class="filter-tab" onclick="filterPackages('beach',this)">🏖️ Beach</button>
+        <button class="filter-tab" onclick="filterPackages('temple',this)">🛕 Temple</button>
+        <button class="filter-tab" onclick="filterPackages('hill-station',this)">⛰️ Hill Station</button>
+        <button class="filter-tab" onclick="filterPackages('backwater',this)">🚣 Backwater</button>
+        <button class="filter-tab" onclick="filterPackages('heritage',this)">🏛️ Heritage</button>
+        <button class="filter-tab" onclick="filterPackages('wildlife',this)">🦁 Wildlife</button>
+      </div>
+      <select class="sort-select" onchange="sortPackages(this.value)">
+        <option value="">Sort By</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="rating">Highest Rated</option>
+      </select>
+    </div>
+    <div class="packages-grid" id="allPackagesGrid"></div>
+  </div>
+</div>
+
+<!-- ======================= PACKAGE DETAIL PAGE ======================= -->
+<div class="page-section" id="page-detail">
+  <div class="package-detail" id="packageDetailContent"></div>
+</div>
+
+<!-- ======================= CABS PAGE ======================= -->
+<div class="page-section" id="page-cabs">
+  <div class="page-banner" style="background-image:url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1600')">
+    <div class="page-banner-content"><h1>Cab Services</h1><p>Comfortable & reliable cab services across South India</p></div>
+  </div>
+  <div class="cabs-page">
+    <div class="section-header">
+      <h2>Available Vehicles</h2>
+      <p>Choose from our fleet of well-maintained vehicles with professional drivers</p>
+    </div>
+    <div class="cabs-grid" id="cabsGrid"></div>
+    <div style="margin-top:50px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:16px;padding:40px 30px;text-align:center;color:white">
+      <h3 style="font-family:'Playfair Display';font-size:1.5rem;margin-bottom:10px">Need a Custom Cab Booking?</h3>
+      <p style="opacity:0.8;margin-bottom:20px">Contact us for airport pickups, multi-city tours, outstation trips, and special arrangements.</p>
+      <button class="btn-primary" onclick="showPage('contact')">Contact Us for Booking</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= HOTELS PAGE ======================= -->
+<div class="page-section" id="page-hotels">
+  <div class="page-banner" style="background-image:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600')">
+    <div class="page-banner-content"><h1>Hotels & Stays</h1><p>Book your perfect stay by contacting us directly</p></div>
+  </div>
+  <div class="hotels-page">
+    <div class="hotels-note">
+      <h3>📞 Hotel Booking Through Personal Contact</h3>
+      <p>We believe in providing personalized service. To book any hotel listed below, please contact the respective person directly via phone or email. Our team can also help you with bookings — just reach out to us!</p>
+    </div>
+    <div class="hotels-grid" id="hotelsGrid"></div>
+  </div>
+</div>
+
+<!-- ======================= ABOUT PAGE ======================= -->
+<div class="page-section" id="page-about">
+  <div class="page-banner" style="background-image:url('https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=1600')">
+    <div class="page-banner-content"><h1>About Us</h1><p>Passionate about showcasing the beauty of South India</p></div>
+  </div>
+  <div class="about-page">
+    <div class="about-intro">
+      <div class="about-intro-image">
+        <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800" alt="South India">
+      </div>
+      <div class="about-intro-content">
+        <h2>Your Gateway to South India's Wonders</h2>
+        <p>Founded with a deep love for South India's diverse culture, breathtaking landscapes, and warm hospitality, South India Tours has been crafting memorable travel experiences for adventurers from around the world.</p>
+        <p>We specialize exclusively in South Indian destinations — from the serene backwaters of Kerala to the ancient temples of Tamil Nadu, from the royal heritage of Karnataka to the sun-kissed beaches of Goa.</p>
+        <p>Our team of passionate travel experts, experienced local guides, and reliable drivers work together to create seamless journeys that go beyond typical tourism.</p>
+      </div>
+    </div>
+    <div class="about-stats">
+      <div class="about-stat-card"><h3>500+</h3><p>Happy Travelers</p></div>
+      <div class="about-stat-card"><h3>50+</h3><p>Destinations Covered</p></div>
+      <div class="about-stat-card"><h3>8+</h3><p>Years Experience</p></div>
+      <div class="about-stat-card"><h3>4.8⭐</h3><p>Average Rating</p></div>
+    </div>
+    <div class="section-header"><h2>Our Values</h2></div>
+    <div class="why-us-grid">
+      <div class="why-us-card"><div class="why-us-icon"><i class="fas fa-heart"></i></div><h3>Passion for Travel</h3><p>Every trip we plan is infused with our genuine love for South India's culture and beauty.</p></div>
+      <div class="why-us-card"><div class="why-us-icon"><i class="fas fa-globe-asia"></i></div><h3>Local Expertise</h3><p>Our team members are locals who know every hidden gem and secret spot in South India.</p></div>
+      <div class="why-us-card"><div class="why-us-icon"><i class="fas fa-handshake"></i></div><h3>Trust & Transparency</h3><p>No hidden charges, honest recommendations, and clear communication at every step.</p></div>
+      <div class="why-us-card"><div class="why-us-icon"><i class="fas fa-leaf"></i></div><h3>Responsible Tourism</h3><p>We promote eco-friendly practices and support local communities through tourism.</p></div>
+    </div>
+    <div style="text-align:center;margin-top:60px">
+      <div class="section-header"><h2>Meet Our Team</h2><p>The passionate people behind your perfect South India experience</p></div>
+      <div class="team-grid">
+        <div class="team-card"><div class="team-avatar">👨‍💼</div><h4>Rajesh Kumar</h4><p class="role">Founder & CEO</p></div>
+        <div class="team-card"><div class="team-avatar">👩‍💼</div><h4>Priya Nair</h4><p class="role">Head of Operations</p></div>
+        <div class="team-card"><div class="team-avatar">👨‍🏫</div><h4>Senthil Kumar</h4><p class="role">Senior Tour Guide</p></div>
+        <div class="team-card"><div class="team-avatar">👩‍💻</div><h4>Anitha Reddy</h4><p class="role">Customer Relations</p></div>
+      </div>
+    </div>
+    <div class="cta-section" style="border-radius:16px;margin-top:60px">
+      <h2>Ready to Start Your Journey?</h2>
+      <p>Let us help you plan the perfect South India adventure</p>
+      <button class="btn-primary" onclick="showPage('contact')" style="position:relative;z-index:1">Get in Touch <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= CONTACT PAGE ======================= -->
+<div class="page-section" id="page-contact">
+  <div class="page-banner" style="background-image:url('https://images.unsplash.com/photo-1609920658906-8223bd289001?w=1600')">
+    <div class="page-banner-content"><h1>Contact Us</h1><p>We'd love to help you plan your South India journey</p></div>
+  </div>
+  <div class="contact-page">
+    <div class="contact-grid">
+      <div class="contact-info-cards">
+        <div class="contact-info-card"><div class="ci-icon"><i class="fas fa-phone"></i></div><div><h4>Call Us</h4><p>+91 98765 43210<br>+91 87654 32109</p></div></div>
+        <div class="contact-info-card"><div class="ci-icon"><i class="fab fa-whatsapp"></i></div><div><h4>WhatsApp</h4><p>+91 98765 43210<br>Quick response guaranteed</p></div></div>
+        <div class="contact-info-card"><div class="ci-icon"><i class="fas fa-envelope"></i></div><div><h4>Email Us</h4><p>info@southindiatours.com<br>booking@southindiatours.com</p></div></div>
+        <div class="contact-info-card"><div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div><div><h4>Visit Us</h4><p>123 MG Road, Ernakulam,<br>Kochi, Kerala 682001</p></div></div>
+        <div class="contact-info-card"><div class="ci-icon"><i class="fas fa-clock"></i></div><div><h4>Working Hours</h4><p>Mon - Sat: 9:00 AM - 7:00 PM<br>Sunday: 10:00 AM - 4:00 PM</p></div></div>
+      </div>
+      <div class="contact-form-card">
+        <h3>Send Us a Message</h3>
+        <form onsubmit="handleContactSubmit(event)">
+          <div class="form-row">
+            <div class="form-group"><label>Full Name *</label><input type="text" required placeholder="Your full name"></div>
+            <div class="form-group"><label>Email *</label><input type="email" required placeholder="your@email.com"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone *</label><input type="tel" required placeholder="+91 XXXXX XXXXX"></div>
+            <div class="form-group"><label>Enquiry Type</label><select><option>General Enquiry</option><option>Package Enquiry</option><option>Cab Booking</option><option>Hotel Booking</option></select></div>
+          </div>
+          <div class="form-group"><label>Subject *</label><input type="text" required placeholder="What's this about?"></div>
+          <div class="form-group"><label>Message *</label><textarea required rows="5" placeholder="Tell us about your travel plans, preferred dates, number of travelers..."></textarea></div>
+          <button type="submit" class="submit-btn">Send Message <i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= FOOTER ======================= -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-about">
+      <h3><i class="fas fa-map-marked-alt" style="color:#f4a261"></i> South<span>India</span>Tours</h3>
+      <p>Your trusted travel partner for exploring the magnificent beauty of South India. From serene backwaters to ancient temples, misty hills to pristine beaches — we craft unforgettable journeys.</p>
+      <div class="footer-socials">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="#" onclick="showPage('home')">Home</a></li>
+        <li><a href="#" onclick="showPage('packages')">Tour Packages</a></li>
+        <li><a href="#" onclick="showPage('cabs')">Cab Services</a></li>
+        <li><a href="#" onclick="showPage('hotels')">Hotels</a></li>
+        <li><a href="#" onclick="showPage('about')">About Us</a></li>
+        <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Destinations</h4>
+      <ul class="footer-links">
+        <li><a href="#" onclick="showPage('packages')">Kerala</a></li>
+        <li><a href="#" onclick="showPage('packages')">Tamil Nadu</a></li>
+        <li><a href="#" onclick="showPage('packages')">Karnataka</a></li>
+        <li><a href="#" onclick="showPage('packages')">Goa</a></li>
+        <li><a href="#" onclick="showPage('packages')">Pondicherry</a></li>
+        <li><a href="#" onclick="showPage('packages')">Andaman Islands</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact Us</h4>
+      <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>123 MG Road, Kochi,<br>Kerala 682001, India</span></div>
+      <div class="footer-contact-item"><i class="fas fa-phone"></i><span>+91 98765 43210<br>+91 87654 32109</span></div>
+      <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>info@southindiatours.com<br>booking@southindiatours.com</span></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 SouthIndiaTours. All rights reserved.</p>
+    <p>Crafted with ❤️ for South India</p>
+  </div>
+</footer>
+
+<script>
+// ==============================
+// DATA
+// ==============================
+const packages = [
+  { id:1, name:"Kerala Backwaters Bliss", state:"Kerala", shortDesc:"Cruise through the serene backwaters of Alleppey and explore God's Own Country.", desc:"Experience the magical backwaters of Kerala on a traditional houseboat. This tour takes you through the enchanting waterways of Alleppey, the lush tea gardens of Munnar, and the beautiful beaches of Kovalam.", duration:"5 Days / 4 Nights", price:15999, originalPrice:19999, image:"https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800", gallery:["https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800","https://images.unsplash.com/photo-1609920658906-8223bd289001?w=800","https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=800"], highlights:["Alleppey Houseboat Stay","Munnar Tea Gardens","Kovalam Beach","Kathakali Dance Show","Ayurvedic Spa Session","Spice Plantation Visit"], itinerary:[{day:1,title:"Arrival in Kochi",desc:"Arrive at Kochi airport. Visit Fort Kochi, Chinese Fishing Nets. Evening Kathakali show."},{day:2,title:"Kochi to Munnar",desc:"Drive to Munnar through scenic routes. Visit Cheeyappara Waterfalls, Spice plantations."},{day:3,title:"Munnar Sightseeing",desc:"Visit Eravikulam National Park, Tea Museum, Mattupetty Dam, Echo Point."},{day:4,title:"Munnar to Alleppey",desc:"Board traditional Kerala houseboat. Cruise through backwaters. Overnight on houseboat."},{day:5,title:"Departure",desc:"Disembark from houseboat. Transfer to Kochi airport."}], inclusions:["4-star hotel accommodation","Houseboat stay","Daily breakfast & dinner","Airport transfers","Sightseeing","Kathakali show tickets"], exclusions:["Flight tickets","Lunch","Personal expenses","Tips","Travel insurance"], rating:4.8, reviews:234, category:"backwater", featured:true },
+  { id:2, name:"Tamil Nadu Temple Trail", state:"Tamil Nadu", shortDesc:"Discover ancient Dravidian temples and rich cultural heritage of Tamil Nadu.", desc:"Journey through the magnificent temples of Tamil Nadu, from the grand Meenakshi Temple in Madurai to the UNESCO World Heritage Brihadisvara Temple in Thanjavur.", duration:"6 Days / 5 Nights", price:18999, originalPrice:23999, image:"https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800", gallery:["https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800","https://images.unsplash.com/photo-1621621534467-11aea08e1228?w=800"], highlights:["Meenakshi Amman Temple","Brihadisvara Temple (UNESCO)","Rameswaram Temple","Shore Temple Mahabalipuram","Bharatanatyam Performance","Chettinad Cuisine"], itinerary:[{day:1,title:"Arrive Chennai",desc:"Visit Kapaleeshwarar Temple, Marina Beach."},{day:2,title:"Mahabalipuram",desc:"Shore Temple, Five Rathas, Kanchipuram silk weaving."},{day:3,title:"Thanjavur",desc:"Brihadisvara Temple, Thanjavur Palace."},{day:4,title:"Madurai",desc:"Meenakshi Amman Temple. Evening ceremony."},{day:5,title:"Rameswaram",desc:"Ramanathaswamy Temple, Pamban Bridge."},{day:6,title:"Departure",desc:"Thirumalai Nayakkar Palace. Transfer to airport."}], inclusions:["3-star hotel","Daily breakfast","AC transport","Guide services","Entry fees"], exclusions:["Flights","Lunch & dinner","Camera fees","Personal expenses"], rating:4.6, reviews:189, category:"temple", featured:true },
+  { id:3, name:"Karnataka Heritage Explorer", state:"Karnataka", shortDesc:"Explore the magnificent ruins of Hampi and royal heritage of Mysore.", desc:"Discover Karnataka's rich heritage from the royal city of Mysore to the ancient ruins of Hampi.", duration:"7 Days / 6 Nights", price:22999, originalPrice:28999, image:"https://images.unsplash.com/photo-1600100397608-e45867d89517?w=800", gallery:["https://images.unsplash.com/photo-1600100397608-e45867d89517?w=800"], highlights:["Mysore Palace","Hampi Ruins (UNESCO)","Jog Falls","Coorg Coffee Plantations","Bangalore City Tour","Badami Cave Temples"], itinerary:[{day:1,title:"Bangalore",desc:"Lalbagh Gardens, Bangalore Palace."},{day:2,title:"Mysore",desc:"Mysore Palace, Chamundi Hills, Brindavan Gardens."},{day:3,title:"Coorg",desc:"Abbey Falls, coffee plantations, Raja Seat."},{day:4,title:"Hampi",desc:"Evening exploration of Hampi bazaar."},{day:5,title:"Hampi Full Day",desc:"Virupaksha Temple, Vittala Temple, Stone Chariot."},{day:6,title:"Badami",desc:"Badami Cave Temples, Pattadakal, Aihole."},{day:7,title:"Departure",desc:"Transfer to Hubli airport."}], inclusions:["Hotel accommodation","Breakfast & dinner","AC vehicle","Guide at Hampi","Entry fees"], exclusions:["Flights","Lunch","Personal expenses","Tips"], rating:4.7, reviews:156, category:"heritage", featured:true },
+  { id:4, name:"Ooty & Kodaikanal Retreat", state:"Tamil Nadu", shortDesc:"Escape to the misty hills of Ooty and Kodaikanal for a refreshing retreat.", desc:"Rejuvenate in the cool climate of South India's most popular hill stations.", duration:"5 Days / 4 Nights", price:13999, originalPrice:17999, image:"https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800", gallery:["https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=800"], highlights:["Nilgiri Mountain Railway","Ooty Botanical Gardens","Kodaikanal Lake","Pillar Rocks","Doddabetta Peak","Tea Factory Visit"], itinerary:[{day:1,title:"Coimbatore to Ooty",desc:"Nilgiri toy train experience."},{day:2,title:"Ooty Sightseeing",desc:"Botanical Gardens, Doddabetta Peak, Tea Museum."},{day:3,title:"Ooty to Kodaikanal",desc:"Scenic drive. Evening lake walk."},{day:4,title:"Kodaikanal",desc:"Pillar Rocks, Coaker's Walk, Bryant Park."},{day:5,title:"Departure",desc:"Drive to Madurai airport."}], inclusions:["Resort accommodation","Daily breakfast","AC vehicle","Toy train tickets","Boating"], exclusions:["Flights","Lunch & dinner","Personal expenses"], rating:4.5, reviews:198, category:"hill-station", featured:true },
+  { id:5, name:"Goa Beach Paradise", state:"Goa", shortDesc:"Sun, sand, and sea — experience the vibrant beach life of Goa.", desc:"Discover the magic of Goa with its pristine beaches, Portuguese heritage, vibrant nightlife.", duration:"4 Days / 3 Nights", price:11999, originalPrice:14999, image:"https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800", gallery:["https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800"], highlights:["Baga & Calangute Beaches","Old Goa Churches","Dudhsagar Waterfalls","Spice Plantation","Water Sports","Sunset Cruise"], itinerary:[{day:1,title:"Arrive Goa",desc:"Check-in at beach resort. Evening at Baga Beach."},{day:2,title:"North Goa",desc:"Fort Aguada, Basilica of Bom Jesus, water sports."},{day:3,title:"South Goa",desc:"Dudhsagar Falls, spice plantation, sunset cruise."},{day:4,title:"Departure",desc:"Morning beach leisure. Transfer to airport."}], inclusions:["Beach resort","Daily breakfast","Airport transfers","Tours","Cruise tickets"], exclusions:["Flights","Water sports","Lunch & dinner","Personal expenses"], rating:4.4, reviews:312, category:"beach", featured:false },
+  { id:6, name:"Pondicherry French Quarter", state:"Puducherry", shortDesc:"Experience the unique Franco-Tamil culture of charming Pondicherry.", desc:"Step into the unique world of Pondicherry where French colonial architecture meets Tamil culture.", duration:"3 Days / 2 Nights", price:8999, originalPrice:11999, image:"https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800", gallery:["https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800"], highlights:["French Quarter Walk","Auroville Matrimandir","Paradise Beach","Sri Aurobindo Ashram","Promenade Beach","French Cuisine"], itinerary:[{day:1,title:"Arrive Pondicherry",desc:"French Quarter walk, Promenade Beach, cafe hopping."},{day:2,title:"Auroville & Beaches",desc:"Auroville, Paradise Beach, Sri Aurobindo Ashram."},{day:3,title:"Departure",desc:"Museum visit, shopping at MG Road."}], inclusions:["Heritage hotel","Breakfast","City tour","Auroville visit","Boat ride"], exclusions:["Transport to/from","Lunch & dinner","Personal expenses"], rating:4.3, reviews:145, category:"heritage", featured:false },
+  { id:7, name:"Andaman Beach Expedition", state:"Andaman & Nicobar", shortDesc:"Crystal clear waters, pristine beaches, and exotic marine life await you.", desc:"Explore the tropical paradise of Andaman Islands with crystal clear waters and vibrant coral reefs.", duration:"6 Days / 5 Nights", price:28999, originalPrice:35999, image:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800", gallery:["https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800"], highlights:["Radhanagar Beach","Scuba Diving","Cellular Jail","Ross Island","Elephant Beach Snorkeling","Glass Bottom Boat"], itinerary:[{day:1,title:"Port Blair",desc:"Cellular Jail, Light & Sound show."},{day:2,title:"Havelock",desc:"Ferry to Havelock. Radhanagar Beach sunset."},{day:3,title:"Havelock Activities",desc:"Scuba/snorkeling at Elephant Beach."},{day:4,title:"Neil Island",desc:"Natural Bridge, Laxmanpur Beach sunset."},{day:5,title:"Back to Port Blair",desc:"Ross Island, North Bay, Chidiya Tapu."},{day:6,title:"Departure",desc:"Samudrika Museum, shopping. Airport."}], inclusions:["Resort stay","Breakfast & dinner","Ferry tickets","Snorkeling","Entry fees","Transfers"], exclusions:["Flights","Scuba charges","Lunch","Personal expenses"], rating:4.9, reviews:267, category:"beach", featured:true },
+  { id:8, name:"Wayanad Wildlife Safari", state:"Kerala", shortDesc:"Explore the wild side of Kerala in the lush forests of Wayanad.", desc:"Venture into Wayanad's pristine wilderness. Trek through ancient forests and spot wildlife.", duration:"4 Days / 3 Nights", price:12999, originalPrice:15999, image:"https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800", gallery:["https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800"], highlights:["Muthanga Wildlife Sanctuary","Edakkal Caves","Banasura Sagar Dam","Bamboo Rafting","Tribal Village Visit","Chembra Peak Trek"], itinerary:[{day:1,title:"Arrive Wayanad",desc:"Check-in treehouse. Evening nature walk."},{day:2,title:"Wildlife & Adventure",desc:"Jeep safari, bamboo rafting, Banasura Dam."},{day:3,title:"Caves & Trek",desc:"Edakkal Caves, Chembra Peak trek, tribal village."},{day:4,title:"Departure",desc:"Soochipara Falls, Meenmutty Falls."}], inclusions:["Treehouse stay","All meals","Jeep safari","Trekking guide","Rafting"], exclusions:["Transport to Wayanad","Personal expenses","Tips"], rating:4.6, reviews:134, category:"wildlife", featured:false },
+];
+
+const cabs = [
+  { type:"Sedan", name:"Swift Dzire / Toyota Etios", image:"https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=400", capacity:4, perKm:12, perDay:2500, features:["Air Conditioned","Music System","Comfortable Seats","Boot Space","GPS"], desc:"Perfect for couples or small families." },
+  { type:"SUV", name:"Toyota Innova / Ertiga", image:"https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=400", capacity:6, perKm:16, perDay:3500, features:["Air Conditioned","Spacious Interior","Music System","Boot Space","First Aid"], desc:"Ideal for families and groups." },
+  { type:"Premium SUV", name:"Toyota Innova Crysta", image:"https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400", capacity:7, perKm:20, perDay:4500, features:["AC","Captain Seats","Charging Points","Premium Interior","Water Bottles"], desc:"Premium travel with captain seats." },
+  { type:"Tempo Traveller", name:"Force Tempo Traveller", image:"https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=400", capacity:12, perKm:22, perDay:5500, features:["AC","Push-back Seats","Music System","Large Luggage Space","Ice Box"], desc:"Best for group tours and pilgrimages." },
+  { type:"Mini Bus", name:"20-Seater Mini Bus", image:"https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=400", capacity:20, perKm:30, perDay:8000, features:["AC","Push-back Seats","PA System","Luggage Compartment","Curtains"], desc:"Perfect for large groups." },
+  { type:"Luxury", name:"Toyota Camry / BMW", image:"https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400", capacity:3, perKm:35, perDay:8000, features:["Leather Seats","Premium Sound","WiFi","Mini Fridge","Chauffeur"], desc:"Ultimate luxury travel experience." },
+];
+
+const hotels = [
+  { name:"Spice Valley Resort", location:"Munnar, Kerala", state:"Kerala", desc:"Nestled amidst tea gardens with stunning mountain views and traditional Kerala hospitality.", image:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800", priceRange:"₹3,000 - ₹8,000 / night", rating:4.5, amenities:["Free WiFi","Pool","Ayurvedic Spa","Restaurant","Room Service","Parking","Garden View"], contact:"Mr. Rajesh Kumar", phone:"+91 98765 43210", email:"booking@spicevalley.com", category:"premium" },
+  { name:"Backwater Heritage Inn", location:"Alleppey, Kerala", state:"Kerala", desc:"Charming heritage property on the banks of Alleppey backwaters.", image:"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800", priceRange:"₹2,500 - ₹6,000 / night", rating:4.3, amenities:["Free WiFi","Backwater View","Restaurant","Canoe Rides","Room Service"], contact:"Mrs. Lakshmi Nair", phone:"+91 98765 43211", email:"info@backwaterheritage.com", category:"standard" },
+  { name:"Temple City Lodge", location:"Madurai, Tamil Nadu", state:"Tamil Nadu", desc:"Located near Meenakshi Temple with easy access to all major attractions.", image:"https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800", priceRange:"₹1,500 - ₹4,000 / night", rating:4.0, amenities:["Free WiFi","AC Rooms","Restaurant","Travel Desk","Parking"], contact:"Mr. Senthil Kumar", phone:"+91 98765 43212", email:"stay@templecitylodge.com", category:"budget" },
+  { name:"Royal Mysore Palace Hotel", location:"Mysore, Karnataka", state:"Karnataka", desc:"Luxury heritage hotel reflecting the royal grandeur of Mysore.", image:"https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800", priceRange:"₹6,000 - ₹15,000 / night", rating:4.8, amenities:["Pool","Spa","Fine Dining","Gym","Conference Hall","Valet Parking","Concierge"], contact:"Mr. Vikram Singh", phone:"+91 98765 43213", email:"reservations@royalmysore.com", category:"luxury" },
+  { name:"Goa Beach Shack Resort", location:"Calangute, Goa", state:"Goa", desc:"Steps from Calangute Beach with comfortable rooms and great seafood.", image:"https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800", priceRange:"₹2,000 - ₹7,000 / night", rating:4.2, amenities:["Beach Access","Pool","Beach Restaurant","Bar","Water Sports Desk"], contact:"Mr. Anthony Fernandes", phone:"+91 98765 43214", email:"hello@goabeachshack.com", category:"standard" },
+  { name:"Coorg Coffee Estate Stay", location:"Coorg, Karnataka", state:"Karnataka", desc:"Wake up to fresh coffee aroma surrounded by lush plantations.", image:"https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800", priceRange:"₹4,000 - ₹10,000 / night", rating:4.6, amenities:["Coffee Tour","Infinity Pool","Spa","Bonfire","Restaurant","Nature Walks"], contact:"Mrs. Kavitha Somaiah", phone:"+91 98765 43217", email:"stay@coorgcoffee.com", category:"luxury" },
+];
+
+const slideData = [
+  { subtitle:"Welcome to", title:"God's Own Country", highlight:"Kerala", desc:"Cruise through serene backwaters, explore lush tea gardens, and experience Ayurvedic bliss." },
+  { subtitle:"Discover", title:"Ancient Temples of", highlight:"Tamil Nadu", desc:"Journey through magnificent Dravidian temples and rich heritage spanning thousands of years." },
+  { subtitle:"Explore", title:"Royal Heritage of", highlight:"Karnataka", desc:"From Mysore Palace to ancient Hampi, Karnataka offers a royal journey through time." },
+  { subtitle:"Experience", title:"Beach Paradise", highlight:"Goa", desc:"Sun-kissed beaches, Portuguese heritage, vibrant nightlife, and the most delicious seafood." },
+];
+
+// ==============================
+// FUNCTIONS
+// ==============================
+let currentSlide = 0;
+let slideInterval;
+let currentFilter = 'all';
+let currentSort = '';
+
+function renderStars(rating) {
+  let s = '';
+  for(let i=1;i<=5;i++) s += `<i class="fas fa-star" style="color:${i<=Math.floor(rating)?'#f4a261':'#ddd'};font-size:0.85rem"></i>`;
+  return s;
+}
+
+function renderPackageCard(pkg) {
+  const discount = pkg.originalPrice ? Math.round(((pkg.originalPrice-pkg.price)/pkg.originalPrice)*100) : 0;
+  return `<div class="package-card">
+    <div class="package-card-image">
+      <img src="${pkg.image}" alt="${pkg.name}" loading="lazy">
+      <span class="package-badge">${pkg.category}</span>
+      <span class="package-duration"><i class="fas fa-clock"></i> ${pkg.duration}</span>
+    </div>
+    <div class="package-card-content">
+      <h3>${pkg.name}</h3>
+      <div class="package-state"><i class="fas fa-map-marker-alt"></i> ${pkg.state}</div>
+      <p class="desc">${pkg.shortDesc}</p>
+      <div class="package-rating">
+        <div class="stars">${renderStars(pkg.rating)}</div>
+        <span class="rating-text">${pkg.rating} (${pkg.reviews} reviews)</span>
+      </div>
+      <div class="package-card-footer">
+        <div class="package-price">
+          ${pkg.originalPrice?`<span class="original">₹${pkg.originalPrice.toLocaleString()}</span>`:''}
+          <span class="current">₹${pkg.price.toLocaleString()}</span>
+          <span class="per-person">per person</span>
+        </div>
+        <button class="view-btn" onclick="showPackageDetail(${pkg.id})">View Details</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderFeatured() {
+  const grid = document.getElementById('featuredGrid');
+  grid.innerHTML = packages.filter(p=>p.featured).map(renderPackageCard).join('');
+}
+
+function renderAllPackages() {
+  let filtered = currentFilter==='all' ? [...packages] : packages.filter(p=>p.category===currentFilter);
+  if(currentSort==='price-low') filtered.sort((a,b)=>a.price-b.price);
+  if(currentSort==='price-high') filtered.sort((a,b)=>b.price-a.price);
+  if(currentSort==='rating') filtered.sort((a,b)=>b.rating-a.rating);
+  document.getElementById('allPackagesGrid').innerHTML = filtered.length ? filtered.map(renderPackageCard).join('') : '<div style="text-align:center;padding:60px 0;color:#888;grid-column:1/-1"><h3>No packages found.</h3><p>Try a different category!</p></div>';
+}
+
+function filterPackages(cat,btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderAllPackages();
+}
+
+function sortPackages(val) {
+  currentSort = val;
+  renderAllPackages();
+}
+
+function renderCabs() {
+  document.getElementById('cabsGrid').innerHTML = cabs.map(c => `
+    <div class="cab-card">
+      <div class="cab-card-image"><img src="${c.image}" alt="${c.name}" loading="lazy"></div>
+      <div class="cab-card-content">
+        <span class="cab-type-badge">${c.type}</span>
+        <h3>${c.name}</h3>
+        <div class="cab-capacity"><i class="fas fa-users"></i> ${c.capacity} Passengers <i class="fas fa-snowflake" style="margin-left:10px"></i> AC</div>
+        <p class="cab-desc">${c.desc}</p>
+        <div class="cab-features">${c.features.map(f=>`<span class="cab-feature-tag"><i class="fas fa-check-circle" style="color:#27ae60;font-size:0.65rem"></i> ${f}</span>`).join('')}</div>
+        <div class="cab-pricing">
+          <div class="cab-price-item"><span class="label">Per Km</span><span class="price">₹${c.perKm}</span></div>
+          <div class="cab-price-item"><span class="label">Per Day</span><span class="price">₹${c.perDay.toLocaleString()}</span></div>
+          <button class="view-btn" onclick="showPage('contact')" style="font-size:0.85rem;padding:8px 18px">Book Now</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderHotels() {
+  document.getElementById('hotelsGrid').innerHTML = hotels.map(h => `
+    <div class="hotel-card">
+      <div class="hotel-card-image">
+        <img src="${h.image}" alt="${h.name}" loading="lazy">
+        <span class="hotel-category-badge ${h.category}">${h.category}</span>
+      </div>
+      <div class="hotel-card-content">
+        <h3>${h.name}</h3>
+        <div class="hotel-location"><i class="fas fa-map-marker-alt"></i> ${h.location}</div>
+        <div style="margin-bottom:10px">${renderStars(h.rating)}</div>
+        <p class="hdesc">${h.desc}</p>
+        <div class="hotel-amenities">${h.amenities.slice(0,5).map(a=>`<span class="amenity-tag">${a}</span>`).join('')}${h.amenities.length>5?`<span class="amenity-tag">+${h.amenities.length-5} more</span>`:''}</div>
+        <div class="hotel-price-range">${h.priceRange}</div>
+        <div class="hotel-contact-section">
+          <h4>📞 Contact for Booking</h4>
+          <div class="hotel-contact-item"><i class="fas fa-user"></i> ${h.contact}</div>
+          <div class="hotel-contact-item"><i class="fas fa-phone"></i> <a href="tel:${h.phone}" style="color:#e07c24;font-weight:600">${h.phone}</a></div>
+          <div class="hotel-contact-item"><i class="fas fa-envelope"></i> <span style="color:#555">${h.email}</span></div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function showPackageDetail(id) {
+  const pkg = packages.find(p=>p.id===id);
+  if(!pkg) return;
+  const discount = pkg.originalPrice ? Math.round(((pkg.originalPrice-pkg.price)/pkg.originalPrice)*100) : 0;
+  document.getElementById('packageDetailContent').innerHTML = `
+    <div class="pd-header">
+      <div class="pd-main-img"><img src="${pkg.image}" alt="${pkg.name}"></div>
+      ${pkg.gallery.length>1?`<div class="pd-gallery">${pkg.gallery.slice(1,3).map(g=>`<img src="${g}" alt="${pkg.name}">`).join('')}</div>`:''}
+    </div>
+    <div class="pd-body">
+      <div class="pd-info">
+        <h2>${pkg.name}</h2>
+        <div class="pd-meta">
+          <div class="pd-meta-item"><i class="fas fa-map-marker-alt"></i> ${pkg.state}</div>
+          <div class="pd-meta-item"><i class="fas fa-clock"></i> ${pkg.duration}</div>
+          <div class="pd-meta-item"><i class="fas fa-star"></i> ${pkg.rating} (${pkg.reviews} reviews)</div>
+        </div>
+        <p class="pd-description">${pkg.desc}</p>
+        <div class="pd-section">
+          <h3><i class="fas fa-hiking"></i> Highlights</h3>
+          <div class="highlights-grid">${pkg.highlights.map(h=>`<div class="highlight-item"><i class="fas fa-check-circle"></i> ${h}</div>`).join('')}</div>
+        </div>
+        <div class="pd-section">
+          <h3><i class="fas fa-calendar-alt"></i> Itinerary</h3>
+          ${pkg.itinerary.map(it=>`<div class="itinerary-item"><h4>Day ${it.day}: ${it.title}</h4><p>${it.desc}</p></div>`).join('')}
+        </div>
+        <div class="pd-section">
+          <h3><i class="fas fa-list"></i> Inclusions</h3>
+          <div class="inclusion-list">${pkg.inclusions.map(i=>`<div class="inclusion-item incl"><i class="fas fa-check-circle"></i> ${i}</div>`).join('')}</div>
+        </div>
+        <div class="pd-section">
+          <h3><i class="fas fa-list"></i> Exclusions</h3>
+          <div class="inclusion-list">${pkg.exclusions.map(i=>`<div class="inclusion-item excl"><i class="fas fa-times-circle"></i> ${i}</div>`).join('')}</div>
+        </div>
+      </div>
+      <div class="booking-sidebar">
+        <div class="booking-card">
+          <div class="price-section">
+            ${pkg.originalPrice?`<span class="orig-price">₹${pkg.originalPrice.toLocaleString()}</span>`:''}
+            <span class="curr-price">₹${pkg.price.toLocaleString()}</span>
+            <span class="pp">per person</span>
+            ${discount>0?`<div class="discount-badge">${discount}% OFF</div>`:''}
+          </div>
+          <form onsubmit="handleBookingSubmit(event)">
+            <div class="form-group"><label>Full Name *</label><input type="text" required placeholder="Your name"></div>
+            <div class="form-group"><label>Email *</label><input type="email" required placeholder="email@example.com"></div>
+            <div class="form-group"><label>Phone *</label><input type="tel" required placeholder="+91 XXXXX XXXXX"></div>
+            <div class="form-group"><label>Travel Date</label><input type="date"></div>
+            <div class="form-group"><label>Travelers</label><select>${[1,2,3,4,5,6,7,8,9,10].map(n=>`<option value="${n}">${n} ${n===1?'Person':'People'}</option>`).join('')}<option value="10+">10+ (Group)</option></select></div>
+            <div class="form-group"><label>Special Requests</label><textarea rows="3" placeholder="Any special requirements..."></textarea></div>
+            <button type="submit" class="submit-btn">Send Enquiry <i class="fas fa-paper-plane"></i></button>
+          </form>
+          <div class="contact-info"><p>Or call us directly</p><strong>+91 98765 43210</strong></div>
+        </div>
+      </div>
+    </div>`;
+  showPage('detail');
+}
+
+// Navigation
+function showPage(page) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.remove('active');
+    if(a.dataset.page===page) a.classList.add('active');
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+  // Close mobile menu
+  document.getElementById('navLinks').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('active');
+}
+
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('active');
+}
+
+// Hero Slider
+function goToSlide(n) {
+  document.querySelectorAll('.hero-slide').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.hero-dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+  const s = slideData[n];
+  document.getElementById('heroContent').querySelector('.subtitle').textContent = s.subtitle;
+  document.getElementById('heroContent').querySelector('h1').innerHTML = `${s.title} <em>${s.highlight}</em>`;
+  document.getElementById('heroContent').querySelector('p:not(.subtitle)').textContent = s.desc;
+  currentSlide = n;
+}
+
+function nextSlide() { goToSlide((currentSlide+1)%slideData.length); }
+slideInterval = setInterval(nextSlide, 4500);
+
+// Navbar scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY>50);
+});
+
+// Form handlers
+function handleContactSubmit(e) {
+  e.preventDefault();
+  showToast('Message sent successfully! We will get back to you soon. ✅');
+  e.target.reset();
+}
+function handleBookingSubmit(e) {
+  e.preventDefault();
+  showToast('Enquiry submitted! We will contact you shortly. ✅');
+  e.target.reset();
+}
+
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError?' error':'');
+  setTimeout(()=>t.classList.remove('show'), 4000);
+}
+
+// INIT
+renderFeatured();
+renderAllPackages();
+renderCabs();
+renderHotels();
+</script>
+</body>
+</html>
